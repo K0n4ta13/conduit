@@ -1,0 +1,24 @@
+[package]
+name = "conduit"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = "0.7.9"
+env_logger = "0.11.6"
+serde = { version = "1.0.217", features = ["derive"] }
+sqlx = { version = "0.8.2", features = ["runtime-tokio", "uuid", "time", "postgres", "tls-rustls"] }
+time = { version = "0.3.37", features = ["serde-human-readable"] }
+tokio = { version = "1.42.0", features = ["full"] }
+log = "0.4.22"
+dotenvy = "0.15.7"
+clap = { version = "4.5.23", features = ["derive", "env"] }
+anyhow = "1.0.95"
+tower = "0.5.2"
+tower-http = { version = "0.6.2", features = ["trace"] }
+thiserror = "2.0.9"
+argon2 = "0.5.3"
+rand = "0.8.5"
+uuid = { version = "1.11.0", features = ["serde"] }
+jsonwebtoken = "9.3.0"
+futures = "0.3.31"

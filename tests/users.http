@@ -1,0 +1,50 @@
+###
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "user": {
+    "username": "Konata2",
+    "email": "konata2@lucky.star",
+    "password": "K0n4ta524"
+  }
+}
+
+###
+POST http://localhost:8080/api/users/login
+Content-Type: application/json
+
+{
+  "user": {
+    "email": "konata2@lucky.star",
+    "password": "K0n4ta524"
+  }
+}
+
+###
+GET http://localhost:8080/api/user
+Authorization: Bearer
+
+###
+PUT http://localhost:8080/api/user
+Authorization: Bearer
+Content-Type: application/json
+
+{
+  "user": {
+    "username": "KonataChola",
+    "bio": "My favoire anime is Suzumiya Haruhi"
+  }
+}
+
+###
+GET http://localhost:8080/api/profiles/Konata
+Authorization: Bearer
+
+###
+POST http://localhost:8080/api/profiles/Konata/follow
+Authorization: Bearer
+
+###
+DELETE http://localhost:8080/api/profiles/Konata/follow
+Authorization: Bearer

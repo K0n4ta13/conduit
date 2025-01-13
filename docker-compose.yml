@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: conduit
+    networks:
+      - conduit_network
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    container_name: "some-postgres"
+
+  app:
+    build:
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    networks:
+      - conduit_network
+    ports:
+      - "8080:8080"
+    container_name: "conduit"
+    depends_on:
+      - db
+networks:
+  conduit_network:
+    driver: bridge
