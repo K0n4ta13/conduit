@@ -4,8 +4,8 @@ Content-Type: application/json
 
 {
   "user": {
-    "username": "Konata2",
-    "email": "konata2@lucky.star",
+    "username": "Konata",
+    "email": "konata@lucky.star",
     "password": "K0n4ta524"
   }
 }
@@ -16,7 +16,7 @@ Content-Type: application/json
 
 {
   "user": {
-    "email": "konata2@lucky.star",
+    "email": "konata@lucky.star",
     "password": "K0n4ta524"
   }
 }

@@ -41,3 +41,7 @@ Authorization: Bearer
 ###
 DELETE http://localhost:8080/api/articles/title-7/favorite
 Authorization: Bearer
+
+###
+GET http://localhost:8080/api/articles/feed
+Authorization: Bearer

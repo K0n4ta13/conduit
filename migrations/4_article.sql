@@ -13,6 +13,7 @@ create table article
 
 select trigger_updated_at('article');
 
+create index article_created_at_key on article (created_at);
 create index article_tags_gin on article using gin (tag_list);
 
 create table article_favorite

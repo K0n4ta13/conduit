@@ -1,4 +1,5 @@
 mod comments;
+mod listing;
 
 use super::profiles::Profile;
 use super::{auth, AppState, Error, Result};
@@ -21,6 +22,13 @@ pub fn router(state: Arc<Config>) -> Router<AppState> {
             post(create_article)
                 .route_layer(middleware::from_fn_with_state(state.clone(), auth::auth)),
         )
+        .route(
+            "/api/articles",
+            get(listing::list_articles)
+                .route_layer(middleware::from_fn_with_state(state.clone(), auth::maybe_auth)),
+        )
+        .route("/api/articles/feed", get(listing::feed_articles)
+            .route_layer(middleware::from_fn_with_state(state.clone(), auth::auth)))
         .route(
             "/api/articles/:slug",
             get(get_article)
