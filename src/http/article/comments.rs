@@ -13,17 +13,17 @@ use crate::config::Config;
 pub fn router(state: Arc<Config>) -> Router<AppState> {
     Router::new()
         .route(
-            "/api/articles/:slug/comments",
+            "/api/articles/{slug}/comments",
             get(get_article_comments)
                 .route_layer(middleware::from_fn_with_state(state.clone(), auth::maybe_auth))
         )
         .route(
-            "/api/articles/:slug/comments",
+            "/api/articles/{slug}/comments",
             post(add_comment)
                 .route_layer(middleware::from_fn_with_state(state.clone(), auth::auth)),
         )
         .route(
-            "/api/articles/:slug/comments/:comment_id",
+            "/api/articles/{slug}/comments/{comment_id}",
             delete(delete_comment)
                 .route_layer(middleware::from_fn_with_state(state, auth::auth)),
 

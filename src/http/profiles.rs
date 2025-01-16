@@ -11,14 +11,14 @@ use std::sync::Arc;
 pub fn router(state: Arc<Config>) -> Router<AppState> {
     Router::new()
         .route(
-            "/api/profiles/:username",
+            "/api/profiles/{username}",
             get(get_user_profile).route_layer(middleware::from_fn_with_state(
                 state.clone(),
                 auth::maybe_auth,
             )),
         )
         .route(
-            "/api/profiles/:username/follow",
+            "/api/profiles/{username}/follow",
             post(follow_user)
                 .delete(unfollow_user)
                 .route_layer(middleware::from_fn_with_state(state, auth::auth)),

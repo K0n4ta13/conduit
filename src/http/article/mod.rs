@@ -30,17 +30,17 @@ pub fn router(state: Arc<Config>) -> Router<AppState> {
         .route("/api/articles/feed", get(listing::feed_articles)
             .route_layer(middleware::from_fn_with_state(state.clone(), auth::auth)))
         .route(
-            "/api/articles/:slug",
+            "/api/articles/{slug}",
             get(get_article)
                 .route_layer(middleware::from_fn_with_state(state.clone(), auth::maybe_auth))
         )
         .route(
-            "/api/articles/:slug",
+            "/api/articles/{slug}",
             put(update_article).delete(delete_article)
                 .route_layer(middleware::from_fn_with_state(state.clone(), auth::auth))
         )
         .route(
-            "/api/articles/:slug/favorite",
+            "/api/articles/{slug}/favorite",
             post(favorite_article).delete(unfavorite_article)
                 .route_layer(middleware::from_fn_with_state(state.clone(), auth::auth)),
         )
