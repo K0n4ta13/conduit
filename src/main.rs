@@ -1,15 +1,26 @@
 use anyhow::Context;
 use clap::Parser;
+use conduit::{
+    config::Config,
+    http
+};
 use sqlx::postgres::PgPoolOptions;
-
-use conduit::config::Config;
-use conduit::http;
+use tracing_subscriber::{
+    layer::SubscriberExt,
+    util::SubscriberInitExt,
+    EnvFilter
+};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     dotenvy::dotenv().ok();
 
-    env_logger::init();
+    tracing_subscriber::registry()
+        .with(
+            EnvFilter::try_from_env("RUST_LOG").unwrap_or(format!("{}=debug,tower_http=debug", env!("CARGO_CRATE_NAME")).into())
+        )
+        .with(tracing_subscriber::fmt::layer())
+        .init();
 
     let config = Config::parse();
 

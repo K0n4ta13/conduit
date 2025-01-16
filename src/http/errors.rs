@@ -1,12 +1,16 @@
-use axum::http::header::WWW_AUTHENTICATE;
-use axum::http::{HeaderMap, HeaderValue, StatusCode};
-use axum::response::{IntoResponse, Response};
-use axum::Json;
+use axum::{
+    http::{
+        header::WWW_AUTHENTICATE, HeaderMap, HeaderValue,
+        StatusCode
+    },
+    response::{IntoResponse, Response},
+    Json
+};
 use serde::Serialize;
 use sqlx::error::DatabaseError;
-use std::borrow::Cow;
-use std::collections::HashMap;
+use std::{borrow::Cow, collections::HashMap};
 use thiserror::Error;
+use tracing::log::error;
 
 #[derive(Error, Debug)]
 pub enum Error {
@@ -78,11 +82,11 @@ impl IntoResponse for Error {
             }
 
             Self::Sqlx(ref e) => {
-                log::error!("SQLx error: {:?}", e);
+                error!("SQLx error: {:?}", e);
             }
 
             Self::Anyhow(ref e) => {
-                log::error!("Generic error: {:?}", e);
+                error!("Generic error: {:?}", e);
             }
 
             _ => (),
