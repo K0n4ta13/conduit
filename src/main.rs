@@ -1,15 +1,8 @@
 use anyhow::Context;
 use clap::Parser;
-use conduit::{
-    config::Config,
-    http
-};
+use conduit::{config::Config, http};
 use sqlx::postgres::PgPoolOptions;
-use tracing_subscriber::{
-    layer::SubscriberExt,
-    util::SubscriberInitExt,
-    EnvFilter
-};
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -17,7 +10,8 @@ async fn main() -> anyhow::Result<()> {
 
     tracing_subscriber::registry()
         .with(
-            EnvFilter::try_from_env("RUST_LOG").unwrap_or(format!("{}=debug,tower_http=debug", env!("CARGO_CRATE_NAME")).into())
+            EnvFilter::try_from_env("RUST_LOG")
+                .unwrap_or(format!("{}=debug,tower_http=debug", env!("CARGO_CRATE_NAME")).into()),
         )
         .with(tracing_subscriber::fmt::layer())
         .init();

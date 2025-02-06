@@ -1,10 +1,10 @@
-use axum::{Extension, Json};
+use super::{Article, ArticleFromQuery, Claims, Result};
+use crate::http::AppState;
 use axum::extract::{Query, State};
+use axum::{Extension, Json};
 use futures::TryStreamExt;
 use serde::{Deserialize, Serialize};
 use time::OffsetDateTime;
-use crate::http::AppState;
-use super::{Article, ArticleFromQuery, Claims, Result};
 
 #[derive(Deserialize, Default)]
 #[serde(default)]
@@ -25,7 +25,7 @@ pub struct FeedArticlesQuery {
 #[serde(rename_all = "camelCase")]
 pub struct MultipleArticlesBody {
     articles: Vec<Article>,
-    articles_count: usize
+    articles_count: usize,
 }
 
 pub(super) async fn list_articles(
@@ -86,7 +86,7 @@ pub(super) async fn list_articles(
 
     Ok(Json(MultipleArticlesBody {
         articles_count: articles.len(),
-        articles
+        articles,
     }))
 }
 

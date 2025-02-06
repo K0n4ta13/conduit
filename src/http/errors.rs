@@ -1,10 +1,7 @@
 use axum::{
-    http::{
-        header::WWW_AUTHENTICATE, HeaderMap, HeaderValue,
-        StatusCode
-    },
+    http::{header::WWW_AUTHENTICATE, HeaderMap, HeaderValue, StatusCode},
     response::{IntoResponse, Response},
-    Json
+    Json,
 };
 use serde::Serialize;
 use sqlx::error::DatabaseError;

@@ -1,21 +1,23 @@
-use std::sync::Arc;
-use super::{Error, Profile, Result, auth};
+use super::{auth, Error, Profile, Result};
+use crate::config::Config;
 use crate::http::auth::Claims;
 use crate::http::AppState;
 use axum::extract::{Path, State};
-use axum::{middleware, Extension, Json, Router};
 use axum::routing::{delete, get, post};
+use axum::{middleware, Extension, Json, Router};
 use futures::TryStreamExt;
 use serde::{Deserialize, Serialize};
+use std::sync::Arc;
 use time::OffsetDateTime;
-use crate::config::Config;
 
 pub fn router(state: Arc<Config>) -> Router<AppState> {
     Router::new()
         .route(
             "/api/articles/{slug}/comments",
-            get(get_article_comments)
-                .route_layer(middleware::from_fn_with_state(state.clone(), auth::maybe_auth))
+            get(get_article_comments).route_layer(middleware::from_fn_with_state(
+                state.clone(),
+                auth::maybe_auth,
+            )),
         )
         .route(
             "/api/articles/{slug}/comments",
@@ -24,9 +26,7 @@ pub fn router(state: Arc<Config>) -> Router<AppState> {
         )
         .route(
             "/api/articles/{slug}/comments/{comment_id}",
-            delete(delete_comment)
-                .route_layer(middleware::from_fn_with_state(state, auth::auth)),
-
+            delete(delete_comment).route_layer(middleware::from_fn_with_state(state, auth::auth)),
         )
 }
 

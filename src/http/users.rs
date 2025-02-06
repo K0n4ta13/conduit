@@ -132,10 +132,9 @@ async fn get_current_user(
             select email, username, bio, image from "user" where user_id = $1
         "#,
         claims.sub
-
     )
-        .fetch_one(&state.db)
-        .await?;
+    .fetch_one(&state.db)
+    .await?;
 
     Ok(Json(UserBody {
         user: User {
@@ -144,7 +143,7 @@ async fn get_current_user(
             username: user.username,
             bio: user.bio,
             image: user.image,
-        }
+        },
     }))
 }
 
@@ -182,14 +181,14 @@ async fn update_user(
         req.user.image,
         claims.sub
     )
-        .fetch_one(&state.db)
-        .await
-        .on_constraint("user_username_key", |_| {
-            Error::unprocessable_entity([("username", "username taken")])
-        })
-        .on_constraint("user_email_key", |_| {
-            Error::unprocessable_entity([("email", "email taken")])
-        })?;
+    .fetch_one(&state.db)
+    .await
+    .on_constraint("user_username_key", |_| {
+        Error::unprocessable_entity([("username", "username taken")])
+    })
+    .on_constraint("user_email_key", |_| {
+        Error::unprocessable_entity([("email", "email taken")])
+    })?;
 
     Ok(Json(UserBody {
         user: User {

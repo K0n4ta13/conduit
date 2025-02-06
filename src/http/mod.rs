@@ -1,8 +1,8 @@
-mod errors;
-mod users;
-mod auth;
-mod profiles;
 mod article;
+mod auth;
+mod errors;
+mod profiles;
+mod users;
 
 use crate::config::Config;
 use anyhow::Context;
@@ -32,7 +32,9 @@ pub async fn serve(config: Config, db: PgPool) -> anyhow::Result<()> {
         .with_state(state)
         .layer(TraceLayer::new_for_http());
 
-    axum::serve(listener, app).await.context("error running HTTP server")?;
+    axum::serve(listener, app)
+        .await
+        .context("error running HTTP server")?;
 
     Ok(())
 }

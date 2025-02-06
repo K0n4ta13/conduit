@@ -33,7 +33,7 @@ impl Claims {
         let jwt = encode(
             &Header::new(Algorithm::RS256),
             &claims,
-            &EncodingKey::from_rsa_pem(&state.config.rsa_private_key.as_ref()).unwrap(),
+            &EncodingKey::from_rsa_pem(state.config.rsa_private_key.as_ref()).unwrap(),
         )
         .unwrap();
 
@@ -79,11 +79,11 @@ pub async fn maybe_auth(
         .headers()
         .get(header::AUTHORIZATION)
         .ok_or(Error::Unauthorized)
-        .and_then(|header| {
-            Ok(header.to_str().ok().and_then(|header| {
+        .map(|header| {
+            header.to_str().ok().and_then(|header| {
                 let jwt = header.strip_prefix(SCHEME_PREFIX)?;
                 Claims::from_jwt(jwt, state).ok()
-            }))
+            })
         })?;
 
     request.extensions_mut().insert(maybe_claims);

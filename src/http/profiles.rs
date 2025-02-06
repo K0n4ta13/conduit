@@ -123,8 +123,8 @@ async fn unfollow_user(
         username,
         claims.sub
     )
-        .fetch_one(&state.db)
-        .await?;
+    .fetch_one(&state.db)
+    .await?;
 
     Ok(Json(ProfileBody { profile }))
 }

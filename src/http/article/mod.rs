@@ -24,24 +24,33 @@ pub fn router(state: Arc<Config>) -> Router<AppState> {
         )
         .route(
             "/api/articles",
-            get(listing::list_articles)
-                .route_layer(middleware::from_fn_with_state(state.clone(), auth::maybe_auth)),
-        )
-        .route("/api/articles/feed", get(listing::feed_articles)
-            .route_layer(middleware::from_fn_with_state(state.clone(), auth::auth)))
-        .route(
-            "/api/articles/{slug}",
-            get(get_article)
-                .route_layer(middleware::from_fn_with_state(state.clone(), auth::maybe_auth))
+            get(listing::list_articles).route_layer(middleware::from_fn_with_state(
+                state.clone(),
+                auth::maybe_auth,
+            )),
         )
         .route(
+            "/api/articles/feed",
+            get(listing::feed_articles)
+                .route_layer(middleware::from_fn_with_state(state.clone(), auth::auth)),
+        )
+        .route(
             "/api/articles/{slug}",
-            put(update_article).delete(delete_article)
-                .route_layer(middleware::from_fn_with_state(state.clone(), auth::auth))
+            get(get_article).route_layer(middleware::from_fn_with_state(
+                state.clone(),
+                auth::maybe_auth,
+            )),
+        )
+        .route(
+            "/api/articles/{slug}",
+            put(update_article)
+                .delete(delete_article)
+                .route_layer(middleware::from_fn_with_state(state.clone(), auth::auth)),
         )
         .route(
             "/api/articles/{slug}/favorite",
-            post(favorite_article).delete(unfavorite_article)
+            post(favorite_article)
+                .delete(unfavorite_article)
                 .route_layer(middleware::from_fn_with_state(state.clone(), auth::auth)),
         )
         .route("/api/tags", get(get_tags))
@@ -380,7 +389,7 @@ async fn unfavorite_article(
 }
 
 async fn get_tags(state: State<AppState>) -> Result<Json<TagsBody>> {
-        let tags = sqlx::query_scalar!(
+    let tags = sqlx::query_scalar!(
         // language=PostgreSQL
         r#"
             select distinct tag "tag!"
